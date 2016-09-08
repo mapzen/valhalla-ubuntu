@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name='viewport' content='width=device-width, initial-scale=1'>
+  <title></title>
+  <link rel='stylesheet' href='https://mapzen.com/common/styleguide/styles/blog.css' type='text/css'>
+  <style>
+    body {
+      height: auto;
+    }
+  </style>
+</head>
+<body>
+  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.css'>
+  <link rel='stylesheet' href='styles.css'>
+
+  <nav class='navbar navbar-default navbar-fixed-top' role='navigation'>
+    <!-- placeholder element to not break section-nav.js -->
+  </nav>
+
+  <div class='section-nav' id='project-nav' role='navigation' aria-label='project-name'>
+    <div class='container'>
+      <div class='section-nav-container'>
+        <div class='section-nav-title'>
+          <h2 id='project-name'><a href='#'>Valhalla Routing</a></h2>
+        </div>
+        <div class='section-nav-items'>
+          <ul class='section-nav-scroll-container'>
+          </ul>
+          <div class='section-nav-dropdown'>&#9698;</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class='section-nav-hitbox'></div>
+
+  <section class='demo-container js-section-navigable' id='demo' data-section-name='Demo' data-section-nav-collapse='false'>
+    <div class='project-demo'>
+      <div id='demo-frame' class='demo-frame'></div>
+    </div>
+    <div class='demo-controls' id='demo-controls'>
+      <div class='demo-control-previous'><i class='fa fa-fw fa-angle-left'></i></div>
+      <ul class='demo-control-list'></ul>
+      <div class='demo-control-next'><i class='fa fa-fw fa-angle-right'></i></div>
+    </div>
+    <div class='demo-blocker disable-blocker'></div>
+  </section>
+
+  <footer><!-- placeholder element to not break section-nav.js --></footer>
+
+  <!-- Demo libraries -->
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/redux/3.2.1/redux.js'></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet-src.js'></script>
+  <script src='https://mapzen.com/tangram/0.6/tangram.min.js'></script>
+  <script src='libs/leaflet-routing-machine.js'></script>
+  <script src='libs/lrm-mapzen.patched.js'></script>
+
+  <!-- Scripts to mimic mapzen.com -->
+  <script src='https://mapzen.com/common/styleguide/scripts/mapzen-styleguide.min.js'></script>
+  <script src='https://code.jquery.com/jquery-2.2.0.min.js'></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.0/jquery.scrollTo.min.js'></script>
+  <script src='common/section-nav.js'></script>
+  <script src='common/demo-switcher.js'></script>
+  <script src='common/projects.js'></script>
+
+  <!-- Demo. Depends on demo-switcher.js -->
+  <script src='demo.js'></script>
+</body>
+</html>

@@ -1,0 +1,13 @@
+Source: valhalla-server
+Maintainer: Michal Migurski <mike-launchpad@teczno.com>
+Priority: optional
+Section: database
+Build-Depends: debhelper
+
+Package: valhalla-server
+Architecture: all
+Depends: valhalla-bin
+Pre-Depends: apache2
+Section: utils
+Homepage: https://github.com/valhalla
+Description: Open Source Routing Engine and Libraries sponsored by Mapzen.

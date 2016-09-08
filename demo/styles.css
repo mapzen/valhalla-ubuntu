@@ -1,0 +1,328 @@
+.demo-container {
+  position: relative;
+}
+
+.demo-frame {
+  /* Matches Zinc style land color */
+  background-color: #bfbfbf;
+}
+
+.leaflet-top {
+  top: 80px;
+}
+
+@media only screen and (max-width: 768px) {
+  .leaflet-top {
+    top: 50px;
+    height: 100%;
+  }
+}
+
+.leaflet-top.leaflet-left {
+  height: 100%;
+}
+
+@media only screen and (max-width: 768px) {
+  .leaflet-top.leaflet-left {
+    width: 100%;
+    z-index: 1001; /* Positions routing container above zoom */
+  }
+}
+
+.leaflet-bar {
+  box-shadow: none;
+  border-radius: 0;
+  border: 1px solid #808080;
+}
+
+.leaflet-routing-container {
+  min-width: 400px;
+  width: 25%;
+  max-width: 500px;
+  background-color: white;
+  font-family: 'Open Sans';
+  transition: all 120ms ease;
+
+  position: absolute;
+  overflow-x: hidden;
+  overflow-y: auto;
+  bottom: 92px;
+  top: 0px;
+}
+
+@media only screen and (max-width: 768px) {
+  .leaflet-routing-container {
+    position: relative;
+    margin: 0 !important;
+    padding: 0 !important;
+    min-width: 100%;
+    max-width: 100%;
+    min-height: 100%;
+    height: 100%;
+    max-height: 100%;
+    right: 100%;
+    border: 0 !important;
+  }
+}
+
+.leaflet-routing-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.leaflet-routing-container::-webkit-scrollbar-track {
+  border-radius: 0;
+  background-color: #eee;
+}
+
+.leaflet-routing-container::-webkit-scrollbar-thumb {
+  border-radius: 0;
+  background-color: #a9a9a9;
+}
+
+.leaflet-control-container .leaflet-routing-container-hide {
+  width: 32px;
+  height: 32px;
+}
+
+.route-display-container {
+}
+
+.route-display-start,
+.route-display-dest {
+  position: relative;
+  font-size: 16px;
+  font-weight: 600;
+  color: #475470;
+}
+
+.route-display-start-text {
+  border-bottom: 1px solid #475470;
+}
+
+.route-display-start-text,
+.route-display-dest-text {
+  min-height: 56px;
+  margin-left: 56px;
+  margin-right: 56px;
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+
+.route-display-start-pin svg,
+.route-display-dest-pin svg {
+  position: absolute;
+  top: 12px;
+  left: 11px;
+  width: 36px;
+  height: 36px;
+  fill: #20345b;
+}
+
+.route-display-info {
+  position: relative;
+  padding-left: 56px;
+  font-size: 14px;
+  line-height: 50px;
+  min-height: 50px;
+  background: #465371;
+  color: #fff;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.icon-mode {
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  left: 13px;
+  top: 5px;
+  fill: white;
+}
+
+.route-display-date-time {
+  display: none;
+  position: relative;
+  padding: 10px;
+  padding-left: 56px;
+  color: #20345b;
+  background-color: #d0d0d0;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.icon-clock {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  left: 19px;
+  top: 12px;
+  fill: #20345b;
+}
+
+.route-itinerary-depart,
+.route-itinerary-arrive {
+  margin-left: 1em;
+  font-style: italic;
+  color: #777;
+}
+
+.route-itinerary-depart {
+  margin-bottom: 0.5em;
+}
+
+.route-itinerary-arrive {
+  margin-top: 0.5em;
+}
+
+.leaflet-routing-alt {
+  border-bottom: 1px solid #808080;
+  transition: all 0.2s ease;
+}
+
+.leaflet-control-container .leaflet-routing-container-hide .leaflet-routing-alt,
+.leaflet-control-container .leaflet-routing-container-hide .leaflet-routing-geocoders {
+  display: none;
+}
+
+.leaflet-bar .leaflet-routing-alt:last-child {
+  border-bottom: none;
+}
+
+.leaflet-bar a:first-child {
+  border-radius: 0px;
+}
+
+.leaflet-bar a:last-child {
+  border-radius: 0px;
+}
+
+.leaflet-routing-alt-minimized {
+  color: #888;
+  max-height: 64px;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.leaflet-routing-alt table {
+  font-size: 14px;
+  font-family: 'Open Sans', Arial;
+  border-collapse: collapse;
+}
+
+.leaflet-routing-alt tr {
+  min-height: 40px;
+  height: 40px;
+  border-bottom: 1px solid #eee;
+}
+
+.leaflet-routing-alt tr:hover {
+  background-color: #eee;
+  cursor: pointer;
+}
+
+.leaflet-routing-alt tr:last-child {
+  border-bottom: 0px;
+}
+
+.route-itinerary-row td {
+  line-height: 1.4;
+}
+
+.route-itinerary-guide {
+  padding: 5px 20px 5px 0;
+  width: 100%;
+}
+
+.route-itinerary-measure {
+  padding: 5px 10px;
+  min-width: 60px;
+  white-space: nowrap;
+}
+
+.route-itinerary-maneuver {
+  padding: 0;
+  min-width: 56px;
+  text-align: center;
+  vertical-align: top;
+}
+
+.icon-maneuver {
+  width: 20px;
+  height: 20px;
+  margin-top: 12px;
+}
+
+.leaflet-routing-icon {
+  -webkit-background-size: 240px 20px;
+  background-size: 240px 20px;
+  background-repeat: no-repeat;
+  margin: 0;
+  content: '';
+  display: inline-block;
+  vertical-align: top;
+  width: 20px;
+  height: 20px;
+}
+
+.mobile-route {
+  display: none;
+}
+
+.routing-error {
+  font-size: 16px;
+  padding: 20px;
+  background-color: #fcf4f2;
+}
+
+.icon-marker svg {
+  width: 100%;
+  height: 100%;
+  fill: #20345b;
+}
+
+@media only screen and (max-width: 768px) {
+  .leaflet-control-container,
+  .leaflet-routing-alternatives-container,
+  .leaflet-routing-alt {
+    height: 100%;
+    max-height: 100%;
+  }
+
+  .left-align {
+    right: 0px !important;
+  }
+
+  .mobile-route {
+    position: absolute;
+    display: block;
+    left: 10px;
+    top: 60px;
+    min-width: 40px;
+    min-height: 40px;
+    background-color: white;
+    border: 2px solid rgba(0,0,0,0.2);
+    background-clip: padding-box;
+    background-repeat: no-repeat;
+    background-position: center;
+    cursor: pointer;
+    z-index: 1030;
+    transition: all 120ms ease;
+  }
+
+  .list-route {
+    background-image: url('images/list.png');
+    background-repeat: no-repeat;
+    background-size: 30px;
+    background-position: center;
+  }
+
+  .cancel-route {
+    background-image: url('images/cancel.png');
+    left: calc(100% - 56px);
+    background-repeat: no-repeat;
+    background-size: 30px;
+    background-position: center;
+  }
+
+}
