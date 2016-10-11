@@ -1,3 +1,9 @@
+valhalla-server (1.1.1-ubuntu1~xenial2) xenial; urgency=medium
+
+  * Added docs to package.
+
+ -- Michal Migurski <mike-launchpad@teczno.com>  Mon, 10 Oct 2016 17:38:11 -0700
+
 valhalla-server (1.1.1-ubuntu1~xenial1) xenial; urgency=medium
 
   * Updated interactive demo title and date. 
