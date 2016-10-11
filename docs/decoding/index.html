@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../img/favicon.ico">
+
+	<title>Decoding - Valhalla</title>
+
+        <link href="../css/bootstrap-custom.min.css" rel="stylesheet">
+        <link href="../css/font-awesome-4.5.0.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="../css/highlight.css">
+
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
+
+        
+    </head>
+
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+
+        <!-- Collapsed navigation -->
+        <div class="navbar-header">
+            
+            <!-- Expander button -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            
+
+            <!-- Main title -->
+            <a class="navbar-brand" href="..">Valhalla</a>
+        </div>
+
+        <!-- Expanded navigation -->
+        <div class="navbar-collapse collapse">
+            
+                <!-- Main navigation -->
+                <ul class="nav navbar-nav">
+                
+                
+                    <li >
+                        <a href="..">Overview</a>
+                    </li>
+                
+                
+                
+                    <li >
+                        <a href="../api-reference/">API reference</a>
+                    </li>
+                
+                
+                
+                    <li >
+                        <a href="../add-routing-to-a-map/">Tutorial</a>
+                    </li>
+                
+                
+                
+                    <li class="active">
+                        <a href="./">Decoding</a>
+                    </li>
+                
+                
+                </ul>
+            
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="#" data-toggle="modal" data-target="#mkdocs_search_modal">
+                        <i class="fa fa-search"></i> Search
+                    </a>
+                </li>
+                
+                    <li >
+                        <a rel="next" href="../add-routing-to-a-map/">
+                            <i class="fa fa-arrow-left"></i> Previous
+                        </a>
+                    </li>
+                    <li class="disabled">
+                        <a rel="prev" >
+                            Next <i class="fa fa-arrow-right"></i>
+                        </a>
+                    </li>
+                
+                
+            </ul>
+        </div>
+    </div>
+</div>
+
+        <div class="container">
+            
+                <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+    
+        <li class="main active"><a href="#decode-a-route-shape">Decode a route shape</a></li>
+        
+            <li><a href="#javascript">JavaScript</a></li>
+        
+            <li><a href="#c-11">C++ 11</a></li>
+        
+            <li><a href="#python">Python</a></li>
+        
+    
+    </ul>
+</div></div>
+                <div class="col-md-9" role="main">
+
+<h1 id="decode-a-route-shape">Decode a route shape</h1>
+<p>Mapzen Turn-by-Turn uses the Google Maps encoded polyline format to store a series of latitude, longitude coordinates as a single string. Polyline encoding greatly reduces the size of the route response, especially for longer routes. A description is found here: <a href="https://developers.google.com/maps/documentation/utilities/polylinealgorithm">polyline encoding</a>.</p>
+<p>Note that Mapzen Turn-by-Turn uses six digits of decimal precision, rather than five as referenced in the Google algorithms documentation.</p>
+<p>Below are some sample algorithms to decode the string to create a list of latitude,longitude coordinates.</p>
+<h2 id="javascript">JavaScript</h2>
+<p>Here is an example of decoding in JavaScript.</p>
+<pre><code class="javascript">// This is adapted from the implementation in Project-OSRM
+// https://github.com/DennisOSRM/Project-OSRM-Web/blob/master/WebContent/routing/OSRM.RoutingGeometry.js
+polyline.decode = function(str, precision) {
+    var index = 0,
+        lat = 0,
+        lng = 0,
+        coordinates = [],
+        shift = 0,
+        result = 0,
+        byte = null,
+        latitude_change,
+        longitude_change,
+        factor = Math.pow(10, precision || 6);
+
+    // Coordinates have variable length when encoded, so just keep
+    // track of whether we've hit the end of the string. In each
+    // loop iteration, a single coordinate is decoded.
+    while (index &lt; str.length) {
+
+        // Reset shift, result, and byte
+        byte = null;
+        shift = 0;
+        result = 0;
+
+        do {
+            byte = str.charCodeAt(index++) - 63;
+            result |= (byte &amp; 0x1f) &lt;&lt; shift;
+            shift += 5;
+        } while (byte &gt;= 0x20);
+
+        latitude_change = ((result &amp; 1) ? ~(result &gt;&gt; 1) : (result &gt;&gt; 1));
+
+        shift = result = 0;
+
+        do {
+            byte = str.charCodeAt(index++) - 63;
+            result |= (byte &amp; 0x1f) &lt;&lt; shift;
+            shift += 5;
+        } while (byte &gt;= 0x20);
+
+        longitude_change = ((result &amp; 1) ? ~(result &gt;&gt; 1) : (result &gt;&gt; 1));
+
+        lat += latitude_change;
+        lng += longitude_change;
+
+        coordinates.push([lat / factor, lng / factor]);
+    }
+
+    return coordinates;
+};
+
+</code></pre>
+
+<h2 id="c-11">C++ 11</h2>
+<p>Here is an example of decoding in C++11</p>
+<pre><code class="c++">#include &lt;vector&gt;
+
+constexpr double kPolylinePrecision = 1E6;
+constexpr double kInvPolylinePrecision = 1.0 / kPolylinePrecision;
+
+struct PointLL {
+  float lat;
+  float lon;
+};
+
+std::vector&lt;PointLL&gt; decode(const std::string&amp; encoded) {
+  size_t i = 0;     // what byte are we looking at
+
+  // Handy lambda to turn a few bytes of an encoded string into an integer
+  auto deserialize = [&amp;encoded, &amp;i](const int previous) {
+    // Grab each 5 bits and mask it in where it belongs using the shift
+    int byte, shift = 0, result = 0;
+    do {
+      byte = static_cast&lt;int&gt;(encoded[i++]) - 63;
+      result |= (byte &amp; 0x1f) &lt;&lt; shift;
+      shift += 5;
+    } while (byte &gt;= 0x20);
+    // Undo the left shift from above or the bit flipping and add to previous
+    // since its an offset
+    return previous + (result &amp; 1 ? ~(result &gt;&gt; 1) : (result &gt;&gt; 1));
+  };
+
+  // Iterate over all characters in the encoded string
+  std::vector&lt;PointLL&gt; shape;
+  int last_lon = 0, last_lat = 0;
+  while (i &lt; encoded.length()) {
+    // Decode the coordinates, lat first for some reason
+    int lat = deserialize(last_lat);
+    int lon = deserialize(last_lon);
+
+    // Shift the decimal point 5 places to the left
+    shape.emplace_back(static_cast&lt;float&gt;(static_cast&lt;double&gt;(lat) *
+                                          kInvPolylinePrecision),
+                       static_cast&lt;float&gt;(static_cast&lt;double&gt;(lon) *
+                                          kInvPolylinePrecision));
+
+    // Remember the last one we encountered
+    last_lon = lon;
+    last_lat = lat;
+  }
+  return shape;
+}
+</code></pre>
+
+<h2 id="python">Python</h2>
+<p>Here is an example of decoding in Python</p>
+<pre><code class="python">#!/usr/bin/env python
+
+import sys
+
+#six degrees of precision in valhalla
+inv = 1.0 / 1e6;
+
+#decode an encoded string
+def decode(encoded):
+  decoded = []
+  previous = [0,0]
+  i = 0
+  #for each byte
+  while i &lt; len(encoded):
+    #for each coord (lat, lon)
+    ll = [0,0]
+    for j in [0, 1]:
+      shift = 0
+      byte = 0x20
+      #keep decoding bytes until you have this coord
+      while byte &gt;= 0x20:
+        byte = ord(encoded[i]) - 63
+        i += 1
+        ll[j] |= (byte &amp; 0x1f) &lt;&lt; shift
+        shift += 5
+      #get the final value adding the previous offset and remember it for the next
+      ll[j] = previous[j] + (~(ll[j] &gt;&gt; 1) if ll[j] &amp; 1 else (ll[j] &gt;&gt; 1))
+      previous[j] = ll[j]
+    #scale by the precision and chop off long coords also flip the positions so
+    #its the far more standard lon,lat instead of lat,lon
+    decoded.append([float('%.6f' % (ll[1] * inv)), float('%.6f' % (ll[0] * inv))])
+  #hand back the list of coordinates
+  return decoded
+
+print decode(sys.argv[1])
+</code></pre></div>
+            
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            
+            <p>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+
+        <script src="../js/jquery-1.10.2.min.js"></script>
+        <script src="../js/bootstrap-3.0.3.min.js"></script>
+        <script src="../js/highlight.pack.js"></script>
+        <script>var base_url = '..';</script>
+        <script data-main="../mkdocs/js/search.js" src="../mkdocs/js/require.js"></script>
+        <script src="../js/base.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title" id="exampleModalLabel">Search</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            From here you can search these documents. Enter
+                            your search terms below.
+                        </p>
+                        <form role="form">
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query">
+                            </div>
+                        </form>
+                        <div id="mkdocs-search-results"></div>
+                    </div>
+                    <div class="modal-footer">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </body>
+</html>
