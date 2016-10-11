@@ -1,3 +1,9 @@
+valhalla-server (1.1.1-ubuntu1~trusty3) trusty; urgency=medium
+
+  * Added docs to package. 
+
+ -- Michal Migurski <mike-launchpad@teczno.com>  Mon, 10 Oct 2016 17:32:26 -0700
+
 valhalla-server (1.1.1-ubuntu1~trusty1) trusty; urgency=medium
 
   * Updated interactive demo title and date. 
