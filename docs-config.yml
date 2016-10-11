@@ -1,0 +1,8 @@
+site_name: Valhalla
+docs_dir: src-docs
+
+pages:
+ - 'Overview': 'index.md'
+ - 'API reference': 'api-reference.md'
+ - 'Tutorial': 'add-routing-to-a-map.md' 
+ - 'Decoding': 'decoding.md' 
